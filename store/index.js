@@ -17,7 +17,9 @@ export const state = () => ({
   wpFetchHeaders: {
     headers: {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Expose-Headers': 'x-wp-total'
+      'Access-Control-Expose-Headers': 'x-wp-total',
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT"
     }
   }
 })
