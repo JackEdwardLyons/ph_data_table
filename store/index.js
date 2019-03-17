@@ -12,10 +12,11 @@ export const state = () => ({
   posts: [],
   numPages: 0,
   loadingPosts: false,
-  baseUrl: 'https://github.com/Rob--W/cors-anywhere/https://blog.paleohacks.com/wp-json/wp/v2/posts',
+  baseUrl: 'http://cors-anywhere.herokuapp.com/https://blog.paleohacks.com/wp-json/wp/v2/posts',
   perPage: '?per_page=10',
   wpFetchHeaders: {
     headers: {
+      'Access-Control-Allow-Headers': 'x-requested-with, x-requested-by',
       'Access-Control-Expose-Headers': 'x-wp-total'
     }
   }
