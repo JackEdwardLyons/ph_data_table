@@ -64,7 +64,7 @@ export default {
 
   proxy: {
     '/api': {
-      target: 'https://blog.paleohacks.com/wp-json/wp/v2/posts',
+      target: 'https://github.com/Rob--W/cors-anywhere/https://blog.paleohacks.com/wp-json/wp/v2/posts',
       pathRewrite: {
         '^/api': '/'
       }

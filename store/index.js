@@ -12,7 +12,7 @@ export const state = () => ({
   posts: [],
   numPages: 0,
   loadingPosts: false,
-  baseUrl: 'https://blog.paleohacks.com/wp-json/wp/v2/posts',
+  baseUrl: 'https://github.com/Rob--W/cors-anywhere/https://blog.paleohacks.com/wp-json/wp/v2/posts',
   perPage: '?per_page=10',
   wpFetchHeaders: {
     headers: {
