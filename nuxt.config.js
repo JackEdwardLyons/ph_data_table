@@ -56,10 +56,12 @@ export default {
   ** Axios module configuration
   */
   axios: {
+    // https://axios.nuxtjs.org/options
     // See https://github.com/nuxt-community/axios-module#options
     // baseURL: 'https://blog.paleohacks.com/wp-json/wp/v2/posts',
+    baseURL: '/',
     proxyHeaders: false,
-    credentials: false
+    proxy: true
   },
 
   proxy: {

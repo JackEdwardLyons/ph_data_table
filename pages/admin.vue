@@ -6,7 +6,7 @@
       </h3>
     </div>
 
-    <Layout v-else row wrap>
+    <section v-else row wrap>
       <v-card>
         <v-card-title>
           PaleoHacks Leadbox Audit
@@ -57,7 +57,7 @@
           </v-alert>
         </v-data-table>
       </v-card>
-    </Layout>
+    </section>
   </section>
 </template>
 
