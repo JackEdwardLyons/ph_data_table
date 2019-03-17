@@ -2,7 +2,7 @@
   <section>
     <div v-if="loadingPosts" class="loading-wrapper">
       <h3 class="text-center">
-        Loading...
+        Loading data from {{ numPosts }} posts...
       </h3>
     </div>
 
@@ -28,17 +28,23 @@
           <template v-slot:items="props">
             <td>{{ props.item.postTitle }}</td>
             <td class="text-xs-right">
-              <a target="_blank" :href="props.item.url">
+              <a class="dont-break-out" target="_blank" :href="props.item.url">
                 {{
                   props.item.url
                 }}
               </a>
             </td>
-            <td class="text-xs-right">
+            <td class="text-xs-right min-width-200">
               {{ props.item.leadboxText }}
             </td>
             <td class="text-xs-right">
-              <a target="_blank" :href="props.item.leadboxUrl">{{ props.item.leadboxUrl }}</a>
+              <a
+                class="dont-break-out"
+                target="_blank"
+                :href="props.item.leadboxUrl"
+              >
+                {{ props.item.leadboxUrl }}
+              </a>
             </td>
             <td class="text-xs-right">
               {{ props.item.leadboxType }}
@@ -85,7 +91,8 @@ export default {
   computed: {
     ...mapGetters({
       posts: 'posts',
-      loadingPosts: 'loadingPosts'
+      loadingPosts: 'loadingPosts',
+      numPosts: 'numPosts'
     })
   },
   mounted() {
@@ -105,5 +112,29 @@ export default {
 
 .text-center {
   text-align: center;
+}
+
+.min-width-200 {
+  min-width: 200px;
+}
+
+.dont-break-out {
+
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
 }
 </style>

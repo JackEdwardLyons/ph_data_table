@@ -11,6 +11,7 @@ import {
 export const state = () => ({
   posts: [],
   numPages: 0,
+  numPosts: 0,
   loadingPosts: false,
   baseUrl: '/api',
   perPage: '?per_page=10',
@@ -24,7 +25,8 @@ export const state = () => ({
 
 export const getters = {
   loadingPosts: state => state.loadingPosts,
-  posts: state => state.posts
+  posts: state => state.posts,
+  numPosts: state => state.numPosts
 }
 
 export const mutations = {
@@ -33,6 +35,9 @@ export const mutations = {
   },
   SET_LOADING_STATE(state, payload) {
     state.loadingPosts = payload
+  },
+  SET_NUM_POSTS(state, payload) {
+    state.numPosts = payload
   }
 }
 
@@ -51,7 +56,10 @@ export const actions = {
       headers
     } = await this.$axios.get(`${URL}${state.perPage}&page=1`, config)
 
-    return headers['x-wp-totalpages']
+    const numPages = headers['x-wp-totalpages']
+    commit('SET_NUM_POSTS', numPages * 10)
+
+    return numPages
   },
 
   async fetchPosts({
