@@ -26,7 +26,9 @@
           :rows-per-page-items="[100, 200, 500, 1000, 2000, 5000]"
         >
           <template v-slot:items="props">
-            <td>{{ props.item.postTitle }}</td>
+            <td class="min-width-250">
+              {{ props.item.postTitle }}
+            </td>
             <td class="text-xs-right">
               <a class="dont-break-out" target="_blank" :href="props.item.url">
                 {{
@@ -34,7 +36,7 @@
                 }}
               </a>
             </td>
-            <td class="text-xs-right min-width-200">
+            <td class="text-xs-right min-width-250">
               {{ props.item.leadboxText }}
             </td>
             <td class="text-xs-right">
@@ -46,7 +48,7 @@
                 {{ props.item.leadboxUrl }}
               </a>
             </td>
-            <td class="text-xs-right">
+            <td class="text-xs-right  min-width-250">
               {{ props.item.leadboxType }}
             </td>
             <td class="text-xs-right">
@@ -103,7 +105,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+td {
+  min-width:  150px;
+}
+
 .flex-center {
   display: flex;
   align-items: center;
@@ -114,12 +120,11 @@ export default {
   text-align: center;
 }
 
-.min-width-200 {
-  min-width: 200px;
+.min-width-250 {
+  min-width: 250px;
 }
 
 .dont-break-out {
-
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -135,6 +140,5 @@ export default {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-
 }
 </style>

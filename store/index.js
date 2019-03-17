@@ -11,7 +11,7 @@ import {
 export const state = () => ({
   posts: [],
   numPages: 0,
-  numPosts: 0,
+  numPosts: 2960,
   loadingPosts: false,
   baseUrl: '/api',
   perPage: '?per_page=10',
