@@ -16,10 +16,7 @@ export const state = () => ({
   perPage: '?per_page=10',
   wpFetchHeaders: {
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Expose-Headers': 'x-wp-total',
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT"
+      'Access-Control-Expose-Headers': 'x-wp-total'
     }
   }
 })
