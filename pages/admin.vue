@@ -9,7 +9,7 @@
     <section v-else row wrap>
       <v-card>
         <v-card-title>
-          PaleoHacks Leadbox Audit
+          <h2>PaleoHacks Leadbox Audit</h2>
           <v-spacer />
           <v-text-field
             v-model="search"
@@ -23,7 +23,7 @@
           :headers="headers"
           :items="posts"
           :search="search"
-          :rows-per-page-items="[100, 200, 500, 1000, 2000, 5000]"
+          :rows-per-page-items="[50, 100, 500, 1000, 2000, 5000]"
         >
           <template v-slot:items="props">
             <td class="min-width-250">

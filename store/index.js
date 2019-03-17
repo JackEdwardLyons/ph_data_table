@@ -98,16 +98,6 @@ function getSpecificPostData(post) {
   let leadboxText = ''
   let leadboxUrl = ''
 
-  // if (!postAstHTML.contains(leadboxHTML)) {
-  //   leadboxHTML = postAstHTML.querySelector('p[style*="#ffffa0"]')
-  //   console.log(leadboxHTML)
-  // }
-
-  // if (leadboxHTML === null) {
-  //   leadboxHTML = postAstHTML.querySelector('p[style*="#ffffa0"]')
-  //   console.log(postAstHTML)
-  // }
-
   if (leadboxHTML === null) {
     leadboxHTML = ''
     leadboxType = 'No leadbox type'
@@ -116,19 +106,18 @@ function getSpecificPostData(post) {
   } else {
     leadboxText = leadboxHTML.textContent
     leadboxUrl = leadboxHTML.querySelector('a').href
-    const leadboxScript = getNextSibling(leadboxHTML, 'script').innerText
 
+    const leadboxScript = getNextSibling(leadboxHTML, 'script').innerText
     const regex = /{(.*?)}/
-    const data = leadboxScript
-    const match = regex.exec(data)[0]
-    // Positive lookbehind regex
+    const match = regex.exec(leadboxScript)[0]
+    // Positive lookbehind regex (Chrome only)
     // ref: https://stackoverflow.com/questions/3569104/positive-look-behind-in-javascript-regular-expression
     const leadboxGenreRegex = /(?<=eventLabel:).*'/
     leadboxType = leadboxGenreRegex.exec(match)[0]
   }
 
   return {
-    postTitle: post.title.rendered.replace(/&#8217;|&#8216;|&#8220;|&#8221;/g, "'"),
+    postTitle: post.title.rendered.replace(/&#[0-9]{4};/g, "'").replace(/&#[0-9]{3};/g, '&'),
     url: post.link,
     leadboxText: leadboxText,
     leadboxUrl: leadboxUrl,
