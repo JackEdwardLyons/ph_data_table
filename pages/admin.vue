@@ -4,6 +4,8 @@
       <h3 class="text-center">
         Loading data from {{ numPosts }} posts...
       </h3>
+
+      <h3 v-if="errorMsg" class="text-center red--text" v-text="errorMsg" />
     </div>
 
     <section v-else row wrap>
@@ -26,34 +28,21 @@
           :rows-per-page-items="[50, 100, 500, 1000, 2000, 5000]"
         >
           <template v-slot:items="props">
-            <td class="min-width-250">
-              {{ props.item.postTitle }}
-            </td>
+            <td class="min-width-250" v-text="props.item.postTitle" />
             <td class="text-xs-right">
-              <a class="dont-break-out" target="_blank" :href="props.item.url">
-                {{
-                  props.item.url
-                }}
-              </a>
+              <a class="dont-break-out" target="_blank" :href="props.item.url" v-text="props.item.url" />
             </td>
-            <td class="text-xs-right min-width-250">
-              {{ props.item.leadboxText }}
-            </td>
+            <td class="text-xs-right min-width-250" v-text="props.item.leadboxText" />
             <td class="text-xs-right">
               <a
                 class="dont-break-out"
                 target="_blank"
                 :href="props.item.leadboxUrl"
-              >
-                {{ props.item.leadboxUrl }}
-              </a>
+                v-text="props.item.leadboxUrl"
+              />
             </td>
-            <td class="text-xs-right  min-width-250">
-              {{ props.item.leadboxType }}
-            </td>
-            <td class="text-xs-right">
-              {{ props.item.postDate }}
-            </td>
+            <td class="text-xs-right  min-width-250" v-text="props.item.leadboxType" />
+            <td class="text-xs-right" v-text="props.item.postDate" />
           </template>
           <v-alert
             v-slot:no-results
@@ -94,7 +83,8 @@ export default {
     ...mapGetters({
       posts: 'posts',
       loadingPosts: 'loadingPosts',
-      numPosts: 'numPosts'
+      numPosts: 'numPosts',
+      errorMsg: 'errorMsg'
     })
   },
   mounted() {

@@ -1,18 +1,14 @@
 import axios from 'axios'
-
 import {
-  getFormattedDate
-} from '../utils/format-date'
-
-import {
-  getNextSibling
-} from '../utils/dom-queries'
+  getLeadboxData
+} from '../utils/fetch-posts'
 
 export const state = () => ({
   posts: [],
   numPages: 0,
   numPosts: 2960,
   loadingPosts: false,
+  errorMsg: null,
   baseUrl: '/api',
   perPage: '?per_page=10',
   wpFetchHeaders: {
@@ -26,7 +22,8 @@ export const state = () => ({
 export const getters = {
   loadingPosts: state => state.loadingPosts,
   posts: state => state.posts,
-  numPosts: state => state.numPosts
+  numPosts: state => state.numPosts,
+  errorMsg: state => state.errorMsg
 }
 
 export const mutations = {
@@ -38,6 +35,9 @@ export const mutations = {
   },
   SET_NUM_POSTS(state, payload) {
     state.numPosts = payload
+  },
+  SET_ERROR(state, payload) {
+    state.errorMsg = payload
   }
 }
 
@@ -46,19 +46,12 @@ export const actions = {
     commit,
     state
   }) {
-    // X-WP-TotalPages
-    // numPosts = request.getResponseHeader('x-wp-total');
     commit('SET_LOADING_STATE', true)
-    const URL = state.baseUrl
-    const config = state.wpFetchHeaders
-
-    const {
-      headers
-    } = await this.$axios.get(`${URL}${state.perPage}&page=1`, config)
-
+    const wpFetchHeaders = state.wpFetchHeaders
+    const baseUrl = state.baseUrl
+    const { headers } = await this.$axios.get(`${baseUrl}${state.perPage}&page=1`, wpFetchHeaders)
     const numPages = headers['x-wp-totalpages']
     commit('SET_NUM_POSTS', numPages * 10)
-
     return numPages
   },
 
@@ -67,61 +60,27 @@ export const actions = {
     state
   },
   numPages) {
-    const URL = state.baseUrl
+    const wpFetchHeaders = state.wpFetchHeaders
+    const baseUrl = state.baseUrl
     const posts = []
-    const config = state.wpFetchHeaders
 
     for (let page = 1; page <= numPages; page += 1) {
-      const post = axios.get(`${URL}${state.perPage}&page=${page}`, config)
+      const post = axios.get(`${baseUrl}${state.perPage}&page=${page}`, wpFetchHeaders)
       posts.push(post)
     }
 
     await axios.all(posts)
       .then((response) => {
-        const postData = response.map(res => res.data)
-        return postData.flat().map(getSpecificPostData)
+        const postData = response.map(res => res.data).flat()
+        return postData.map(getLeadboxData)
       })
       .then((data) => {
         commit('SET_POSTS', data)
         commit('SET_LOADING_STATE', false)
+        return true
       })
+      .catch(e => commit('SET_ERROR', e))
 
-    return true
-  }
-}
-
-function getSpecificPostData(post) {
-  const parser = new DOMParser()
-  const postAstHTML = parser.parseFromString(post.content.rendered, 'text/html')
-  let leadboxHTML = postAstHTML.querySelector('.postLeadbox')
-  let leadboxType = ''
-  let leadboxText = ''
-  let leadboxUrl = ''
-
-  if (leadboxHTML === null) {
-    leadboxHTML = ''
-    leadboxType = 'No leadbox type'
-    leadboxText = 'No Leadbox specified in post'
-    leadboxUrl = ''
-  } else {
-    leadboxText = leadboxHTML.textContent
-    leadboxUrl = leadboxHTML.querySelector('a').href
-
-    const leadboxScript = getNextSibling(leadboxHTML, 'script').innerText
-    const regex = /{(.*?)}/
-    const match = regex.exec(leadboxScript)[0]
-    // Positive lookbehind regex (Chrome only)
-    // ref: https://stackoverflow.com/questions/3569104/positive-look-behind-in-javascript-regular-expression
-    const leadboxGenreRegex = /(?<=eventLabel:).*'/
-    leadboxType = leadboxGenreRegex.exec(match)[0]
-  }
-
-  return {
-    postTitle: post.title.rendered.replace(/&#[0-9]{4};/g, "'").replace(/&#[0-9]{3};/g, '&'),
-    url: post.link,
-    leadboxText: leadboxText,
-    leadboxUrl: leadboxUrl,
-    leadboxType: leadboxType,
-    postDate: getFormattedDate(post.date)
+    return false
   }
 }
