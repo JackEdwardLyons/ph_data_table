@@ -26,7 +26,7 @@ export function getLeadboxData(post) {
   if (hardCodedLeadBoxHTML) {
     leadboxText = '[ HARDCODED ] ' + hardCodedLeadBoxHTML.textContent
     leadboxScript = hardCodedLeadBoxHTML.querySelector('script')
-    leadboxType = '** No Leadbox type specified **'
+    leadboxType = 'Custom'
     leadboxUrl = hardCodedLeadBoxHTML.querySelector('a')
     if (leadboxUrl === null || !leadboxUrl) {
       leadboxUrl = ''
